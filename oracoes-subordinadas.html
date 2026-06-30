@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orações Subordinadas — quadro-negro</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root{
+  --board: #1e3d2f;
+  --board-deep: #163026;
+  --board-line: rgba(244,241,230,0.10);
+  --chalk: #f4f1e6;
+  --chalk-dim: #c9d6cd;
+  --sub: #ffd166;   /* substantivas */
+  --adj: #8ecae6;   /* adjetivas */
+  --adv: #ff7f51;   /* adverbiais geral */
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(244,241,230,0.04), transparent 60%),
+    var(--board);
+  color:var(--chalk);
+  font-family:'Outfit', sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* chalk dust texture */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  opacity:0.5;
+  background-image:
+    radial-gradient(rgba(244,241,230,0.03) 1px, transparent 1px),
+    radial-gradient(rgba(244,241,230,0.025) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 2px 4px;
+  z-index:0;
+}
+
+.wrap{max-width:880px; margin:0 auto; padding:0 22px;}
+
+/* HERO */
+header.hero{
+  position:relative;
+  padding:72px 0 56px;
+  border-bottom: 2px dashed var(--board-line);
+}
+.chalk-label{
+  display:inline-block;
+  font-family:'JetBrains Mono', monospace;
+  font-size:13px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--adv);
+  border:1.5px solid var(--adv);
+  border-radius:3px;
+  padding:4px 10px;
+  transform:rotate(-1.2deg);
+  margin-bottom:18px;
+}
+h1.title{
+  font-family:'Caveat', cursive;
+  font-weight:700;
+  font-size:clamp(48px, 9vw, 84px);
+  line-height:0.95;
+  margin:0 0 18px;
+  color:var(--chalk);
+  text-shadow: 0 0 1px rgba(244,241,230,0.3);
+}
+.hero p.lead{
+  font-size:18px;
+  max-width:560px;
+  color:var(--chalk-dim);
+}
+
+/* SECTION SCAFFOLD */
+section{ padding:54px 0; border-bottom:2px dashed var(--board-line); position:relative; z-index:1;}
+section:last-of-type{border-bottom:none;}
+.eyebrow{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--chalk-dim);
+  margin-bottom:10px;
+}
+h2{
+  font-family:'Caveat', cursive;
+  font-weight:700;
+  font-size:clamp(32px,5vw,46px);
+  margin:0 0 8px;
+}
+h3{
+  font-family:'Outfit',sans-serif;
+  font-weight:600;
+  font-size:19px;
+  margin:0 0 6px;
+}
+.intro-text{max-width:640px; color:var(--chalk-dim); font-size:16px; margin-bottom:28px;}
+
+/* example boxes - looks like writing framed on the board */
+.example{
+  border-left:3px solid var(--chalk);
+  padding:10px 16px;
+  margin:14px 0;
+  font-size:17px;
+  font-style:italic;
+  color:var(--chalk);
+  background:rgba(244,241,230,0.04);
+  border-radius:0 6px 6px 0;
+}
+.example b{font-style:normal; border-bottom:2px solid currentColor; padding-bottom:1px;}
+
+/* DEFINITION CARD */
+.def-card{
+  background:var(--board-deep);
+  border:1.5px solid var(--board-line);
+  border-radius:10px;
+  padding:22px 24px;
+  margin:18px 0 8px;
+}
+.def-card p{margin:0; color:var(--chalk-dim);}
+.def-card p + p{margin-top:10px;}
+
+/* function tags grid */
+.tag-grid{display:flex; flex-wrap:wrap; gap:8px; margin:18px 0;}
+.tag{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px;
+  padding:5px 11px;
+  border-radius:20px;
+  border:1.5px solid;
+  white-space:nowrap;
+}
+
+/* REVIEW CARDS substantivas / adjetivas */
+.review-grid{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:18px;}
+.review-card{
+  background:var(--board-deep);
+  border-left:4px solid var(--sub);
+  border-radius:0 8px 8px 0;
+  padding:16px 20px;
+}
+.review-card.adj{border-left-color:var(--adj);}
+.review-card h4{
+  margin:0 0 6px;
+  font-size:16px;
+  font-weight:600;
+  display:flex; align-items:center; gap:8px;
+}
+.review-card p{margin:0; color:var(--chalk-dim); font-size:15px;}
+.review-card .ex{margin-top:8px; font-style:italic; color:var(--chalk); font-size:15px;}
+
+/* METHOD STEPS (general method, adverbiais) */
+.method{
+  display:grid;
+  gap:14px;
+  margin:24px 0;
+  counter-reset: step;
+}
+.method-step{
+  display:grid;
+  grid-template-columns:44px 1fr;
+  gap:14px;
+  align-items:start;
+}
+.step-num{
+  counter-increment:step;
+  width:44px; height:44px;
+  border-radius:50%;
+  border:2px solid var(--adv);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Caveat',cursive; font-weight:700; font-size:24px;
+  color:var(--adv);
+}
+.step-num::before{content: counter(step);}
+.method-step p{margin:4px 0 0; color:var(--chalk-dim);}
+
+/* slow-down banner before adverbiais */
+.slow-banner{
+  background:linear-gradient(135deg, rgba(255,127,81,0.12), rgba(255,127,81,0.02));
+  border:1.5px dashed var(--adv);
+  border-radius:10px;
+  padding:20px 22px;
+  margin:22px 0 30px;
+}
+.slow-banner p{margin:0; color:var(--chalk);}
+.slow-banner b{color:var(--adv);}
+
+/* CONJUNCTION TYPE CARD */
+.type-card{
+  border-radius:12px;
+  margin:20px 0;
+  overflow:hidden;
+  border:1.5px solid var(--board-line);
+  background:var(--board-deep);
+}
+.type-head{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:18px 20px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  text-align:left;
+  color:inherit;
+  font-family:inherit;
+}
+.type-head:hover{background:rgba(244,241,230,0.03);}
+.type-head .left{display:flex; align-items:center; gap:14px;}
+.dot{width:14px; height:14px; border-radius:50%; flex:none;}
+.type-head h3{margin:0;}
+.type-head .question{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px;
+  color:var(--chalk-dim);
+  margin-top:2px;
+}
+.chev{
+  font-size:20px;
+  transition:transform .25s ease;
+  color:var(--chalk-dim);
+  flex:none;
+}
+.type-card.open .chev{transform:rotate(180deg);}
+
+.type-body{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .35s ease;
+  padding:0 20px;
+}
+.type-card.open .type-body{padding-bottom:22px;}
+
+.conj-row{margin:6px 0 16px;}
+.conj-row .lbl{font-family:'JetBrains Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--chalk-dim); display:block; margin-bottom:6px;}
+.conj-row .hint{font-size:12px; color:var(--chalk-dim); font-style:italic; margin-top:6px; display:block;}
+.conj-pills{display:flex; flex-wrap:wrap; gap:7px;}
+.conj-pill{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  padding:4px 10px;
+  border-radius:6px;
+  background:rgba(244,241,230,0.06);
+  border:1px solid var(--board-line);
+  color:var(--chalk);
+  cursor:pointer;
+  transition:.18s ease;
+}
+.conj-pill:hover{background:rgba(244,241,230,0.12); transform:translateY(-1px);}
+.conj-pill.active{
+  background:var(--chalk);
+  color:var(--board-deep);
+  border-color:var(--chalk);
+  font-weight:700;
+}
+
+.example.in-card{margin:10px 0 18px; transition:opacity .15s ease;}
+.example.in-card.swap{opacity:0;}
+
+/* passo a passo interactive */
+.pp{margin-top:6px;}
+.pp-steps{display:grid; gap:10px; margin-bottom:12px;}
+.pp-step{
+  opacity:0;
+  max-height:0;
+  overflow:hidden;
+  transition:opacity .4s ease, max-height .4s ease, transform .4s ease;
+  transform:translateY(6px);
+  border-left:3px solid;
+  padding-left:12px;
+  font-size:15px;
+  color:var(--chalk-dim);
+}
+.pp-step.shown{opacity:1; max-height:200px; transform:translateY(0); padding-top:2px; padding-bottom:2px;}
+.pp-step b{color:var(--chalk); font-weight:600;}
+.pp-btn{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  border:1.5px solid var(--chalk-dim);
+  color:var(--chalk);
+  background:transparent;
+  padding:8px 14px;
+  border-radius:7px;
+  cursor:pointer;
+  transition:.2s;
+}
+.pp-btn:hover{background:rgba(244,241,230,0.08);}
+.pp-btn:disabled{opacity:0.35; cursor:default;}
+.pp-done{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;
+  color:var(--chalk-dim);
+}
+
+/* testes de subordinação */
+.test-list{margin:18px 0 26px; display:grid; gap:12px;}
+.test-item{display:flex; gap:12px; align-items:flex-start; font-size:15px; color:var(--chalk-dim);}
+.test-item .ico{
+  flex:none; width:26px; height:26px; border-radius:50%;
+  border:1.5px solid var(--adv); color:var(--adv);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; font-size:12px; margin-top:1px;
+}
+.test-item b{color:var(--chalk);}
+
+/* comparação porque x pois */
+.compare-grid{display:grid; grid-template-columns:1fr; gap:14px; margin:16px 0 8px;}
+@media (min-width:640px){.compare-grid{grid-template-columns:1fr 1fr;}}
+.compare-card{
+  background:var(--board-deep);
+  border:1.5px solid var(--board-line);
+  border-radius:10px;
+  padding:18px 20px;
+}
+.compare-card.sub{border-left:4px solid var(--adv);}
+.compare-card.coord{border-left:4px solid var(--chalk-dim);}
+.compare-card h4{
+  margin:0 0 12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-weight:700;
+}
+.compare-card.sub h4{color:var(--adv);}
+.compare-card.coord h4{color:var(--chalk-dim);}
+.compare-card .ex{font-style:italic; font-size:15.5px; margin-bottom:12px; color:var(--chalk);}
+.compare-line{font-size:14px; color:var(--chalk-dim); margin:8px 0;}
+.compare-line .mark{font-family:'JetBrains Mono',monospace; margin-right:6px;}
+.compare-line .ok{color:#06d6a0;}
+.compare-line .no{color:#ef476f;}
+.compare-card .note{font-size:14px; color:var(--chalk-dim); margin-top:12px; padding-top:12px; border-top:1px dashed var(--board-line);}
+
+/* tip box */
+.tip{
+  background:rgba(142,202,230,0.08);
+  border:1.5px solid rgba(142,202,230,0.35);
+  border-radius:10px;
+  padding:16px 18px;
+  margin:30px 0 0;
+  font-size:15px;
+  color:var(--chalk-dim);
+}
+.tip b{color:var(--adj);}
+
+footer{
+  padding:40px 0 70px;
+  text-align:center;
+  color:var(--chalk-dim);
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px;
+}
+
+@media (max-width:560px){
+  .type-head .question{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="chalk-label">gramática · sintaxe</span>
+    <h1 class="title">Orações Subordinadas</h1>
+    <p class="lead">Uma oração que não fica de pé sozinha — ela depende de outra para fazer sentido completo. Vamos relembrar rápido as substantivas e as adjetivas, e depois ir bem devagar nas adverbiais, passo a passo.</p>
+  </header>
+
+  <!-- O QUE É -->
+  <section id="o-que-e">
+    <div class="eyebrow">parte 1</div>
+    <h2>O que é uma oração subordinada?</h2>
+    <p class="intro-text">Um período composto pode ter mais de uma oração. Quando uma dessas orações <em>não tem sentido sozinha</em> e depende de outra (a oração principal) para completar seu significado, ela é chamada de <b>oração subordinada</b>. Ela sempre exerce uma função sintática dentro do período — ou seja, ela "faz o papel" de um substantivo, de um adjetivo ou de um advérbio.</p>
+
+    <div class="def-card">
+      <p>Repare nesse período:</p>
+      <div class="example"><b>Eu acredito</b> que você vai passar.</div>
+      <p>Se eu disser só "que você vai passar", a frase fica sem chão — não dá pra entender sozinha. Ela <b>depende</b> de "Eu acredito" para existir. Por isso é subordinada.</p>
+    </div>
+
+    <div class="tag-grid">
+      <span class="tag" style="border-color:var(--sub); color:var(--sub);">substantiva → faz o papel de substantivo</span>
+      <span class="tag" style="border-color:var(--adj); color:var(--adj);">adjetiva → faz o papel de adjetivo</span>
+      <span class="tag" style="border-color:var(--adv); color:var(--adv);">adverbial → faz o papel de advérbio</span>
+    </div>
+
+    <div class="tip" style="border-color:rgba(255,209,102,0.4); background:rgba(255,209,102,0.07);">
+      <b>Dica de ouro — o teste da troca:</b> se a oração faz o papel de um substantivo, de um adjetivo ou de um advérbio, então dá pra <em>trocar a oração inteira</em> por uma palavra desse tipo, e a frase continua de pé. Use isso pra descobrir rapidinho qual é qual:
+      <div class="test-list" style="margin-top:14px; margin-bottom:0;">
+        <div class="test-item"><span class="ico" style="border-color:var(--sub); color:var(--sub);">S</span><div><b>Troque por "isso":</b> Eu acredito <u>que você vai passar</u>. → Eu acredito <u>nisso</u>. ✓ Funcionou → é substantiva.</div></div>
+        <div class="test-item"><span class="ico" style="border-color:var(--adj); color:var(--adj);">A</span><div><b>Troque por um adjetivo:</b> Os alunos <u>que estudaram</u> passaram. → Os alunos <u>estudiosos</u> passaram. ✓ Funcionou → é adjetiva.</div></div>
+        <div class="test-item"><span class="ico" style="border-color:var(--adv); color:var(--adv);">V</span><div><b>Troque por um advérbio:</b> Estudei bastante <u>para que eu pudesse passar</u>. → Estudei bastante <u>assim</u>. ✓ Funcionou → é adverbial.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVISÃO SUBSTANTIVAS -->
+  <section id="substantivas">
+    <div class="eyebrow">parte 2 · revisão relâmpago</div>
+    <h2 style="color:var(--sub);">Orações substantivas</h2>
+    <p class="intro-text">Geralmente começam com <b>que</b> ou <b>se</b>, e ocupam o lugar de um substantivo na frase: podem ser sujeito, objeto, complemento etc.</p>
+
+    <div class="review-grid">
+      <div class="review-card">
+        <h4>Subjetiva — função de sujeito</h4>
+        <p>A oração subordinada é o sujeito da oração principal.</p>
+        <div class="ex">É importante <u>que você estude todos os dias</u>.</div>
+      </div>
+      <div class="review-card">
+        <h4>Objetiva direta — função de objeto direto</h4>
+        <p>Completa o verbo da principal sem precisar de preposição.</p>
+        <div class="ex">Eu espero <u>que você venha</u>.</div>
+      </div>
+      <div class="review-card">
+        <h4>Objetiva indireta — função de objeto indireto</h4>
+        <p>Completa o verbo da principal, mas precisa de preposição.</p>
+        <div class="ex">Eu me lembro <u>de que prometi ajudar</u>.</div>
+      </div>
+      <div class="review-card">
+        <h4>Completiva nominal — completa um nome</h4>
+        <p>Completa o sentido de um substantivo, adjetivo ou advérbio (com preposição).</p>
+        <div class="ex">Tenho certeza <u>de que vou conseguir</u>.</div>
+      </div>
+      <div class="review-card">
+        <h4>Predicativa — função de predicativo</h4>
+        <p>Vem depois de um verbo de ligação, normalmente após vírgula.</p>
+        <div class="ex">O meu desejo é <u>que todos sejam felizes</u>.</div>
+      </div>
+      <div class="review-card">
+        <h4>Apositiva — função de aposto</h4>
+        <p>Explica algo dito antes, geralmente após dois-pontos.</p>
+        <div class="ex">Só peço uma coisa: <u>que você tenha paciência</u>.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVISÃO ADJETIVAS -->
+  <section id="adjetivas">
+    <div class="eyebrow">parte 3 · revisão relâmpago</div>
+    <h2 style="color:var(--adj);">Orações adjetivas</h2>
+    <p class="intro-text">Começam com um <b>pronome relativo</b> (que, o qual, quem, cujo, onde...) e funcionam como um adjetivo: dão uma característica a um substantivo que veio antes delas.</p>
+
+    <div class="review-grid">
+      <div class="review-card adj">
+        <h4>Restritiva — sem vírgula, restringe</h4>
+        <p>Limita o sentido do substantivo: só estamos falando de uma parte do grupo.</p>
+        <div class="ex">Os alunos <u>que estudaram</u> passaram na prova.</div>
+        <p style="margin-top:6px;">→ ideia: só os que estudaram passaram, os outros não.</p>
+      </div>
+      <div class="review-card adj">
+        <h4>Explicativa — com vírgula, explica</h4>
+        <p>Acrescenta uma característica a todo o grupo, sem restringir nada.</p>
+        <div class="ex">Os alunos, <u>que estudaram muito</u>, passaram na prova.</div>
+        <p style="margin-top:6px;">→ ideia: todos estudaram, e todos passaram. A vírgula muda o sentido todo!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADVERBIAIS - DEVAGAR -->
+  <section id="adverbiais">
+    <div class="eyebrow">parte 4 · agora devagar</div>
+    <h2 style="color:var(--adv);">Orações adverbiais</h2>
+
+    <div class="slow-banner">
+      <p>Aqui a gente vai com calma. A oração subordinada adverbial é introduzida por uma <b>conjunção subordinativa adverbial</b> e funciona como um <b>advérbio</b>: ela diz <em>em que circunstância</em> acontece o que está na oração principal — quando, por quê, com que condição, com que finalidade etc.</p>
+    </div>
+
+    <h3 style="margin-bottom:4px; color:var(--adv);">Por que a adverbial é subordinada — e não coordenada?</h3>
+    <p class="intro-text" style="margin-bottom:14px;">Duas orações podem se ligar de dois jeitos bem diferentes. Numa <b style="color:var(--chalk);">coordenação</b>, cada oração tem vida própria — elas só estão somadas, lado a lado. Numa <b style="color:var(--chalk);">subordinação</b>, uma oração precisa da outra para existir: ela está "dentro" do período, fazendo o papel de uma peça da frase. É por isso que "porque" e "pois" parecem fazer a mesma coisa, mas pertencem a famílias diferentes.</p>
+
+    <div class="test-list">
+      <div class="test-item"><span class="ico">1</span><div><b>Sentido sozinha:</b> a oração subordinada não tem sentido completo se você a isola da principal. A coordenada tem.</div></div>
+      <div class="test-item"><span class="ico">2</span><div><b>Função sintática:</b> a subordinada exerce uma função dentro do período — no caso da adverbial, ela funciona como advérbio (adjunto adverbial). A coordenada não exerce função nenhuma: ela só soma uma ideia nova ao lado da primeira.</div></div>
+      <div class="test-item"><span class="ico">3</span><div><b>Pode mudar de lugar:</b> a subordinada geralmente pode ser deslocada para o início do período sem soar estranho. A coordenada fica grudada na posição em que está, sempre depois de vírgula ou ponto.</div></div>
+    </div>
+
+    <p class="intro-text" style="margin-bottom:10px;">Vamos aplicar os três testes num caso clássico, que confunde bastante: <b style="color:var(--chalk);">porque</b> (subordinativa) e <b style="color:var(--chalk);">pois</b> depois de vírgula (coordenativa).</p>
+
+    <div class="compare-grid">
+      <div class="compare-card sub">
+        <h4>subordinada causal · porque</h4>
+        <div class="ex">Não fui à escola <b>porque</b> estava doente.</div>
+        <div class="compare-line"><span class="mark ok">✓</span>dá pra inverter: "Porque estava doente, não fui à escola." — soa natural.</div>
+        <div class="compare-line"><span class="mark ok">✓</span>dá pra reduzir: "Por estar doente, não fui à escola." — só dá pra reduzir o que depende de algo.</div>
+        <div class="note">"estava doente" não existe sozinha aqui: ela só está ali para responder "por quê" da principal. Isso é uma função sintática — adjunto adverbial de causa. Por isso é <b style="color:var(--chalk);">subordinada</b>.</div>
+      </div>
+      <div class="compare-card coord">
+        <h4>coordenada explicativa · pois</h4>
+        <div class="ex">Não fui à escola, <b>pois</b> estava doente.</div>
+        <div class="compare-line"><span class="mark no">✗</span>não dá pra inverter: "Pois estava doente, não fui à escola." — soa estranho, quase errado.</div>
+        <div class="compare-line"><span class="mark ok">✓</span>continua de pé sozinha: "Estava doente." já é uma frase completa, com sentido próprio.</div>
+        <div class="note">"pois" aqui só junta uma justificativa do lado de fora, sem entrar na estrutura da primeira oração. Por isso é <b style="color:var(--chalk);">coordenada</b> — mesmo trazendo uma ideia parecida de causa.</div>
+      </div>
+    </div>
+
+    <div class="tip" style="border-color:rgba(142,202,230,0.35); background:rgba(142,202,230,0.08); margin-top:18px;">
+      <b>Regra prática:</b> se você consegue jogar a oração para o início da frase sem soar estranho, ela é subordinada. Se ela só faz sentido grudada depois de uma vírgula, separada da principal, ela é coordenada — mesmo que pareça estar "explicando" a primeira.
+    </div>
+
+    <h3 style="margin-bottom:4px; margin-top:36px;">O método: 3 passos para classificar qualquer adverbial</h3>
+    <p class="intro-text" style="margin-bottom:6px;">Antes de ver os 9 tipos, aprenda o caminho. Esse mesmo método vale para todos eles.</p>
+
+    <div class="method">
+      <div class="method-step">
+        <div class="step-num"></div>
+        <div>
+          <b>Ache a conjunção</b>
+          <p>É a palavra (ou expressão) que liga a oração subordinada à oração principal — porque, se, embora, quando, para que...</p>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="step-num"></div>
+        <div>
+          <b>Pergunte qual ideia ela traz</b>
+          <p>Cada conjunção "carrega" uma ideia: causa, tempo, condição, finalidade... Pergunte: por quê? quando? com que condição?</p>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="step-num"></div>
+        <div>
+          <b>Dê o nome ao tipo</b>
+          <p>A ideia que você encontrou já é o nome do tipo de adverbial: causa → causal; tempo → temporal; condição → condicional.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="intro-text">Agora clique em cada tipo abaixo. Dentro, use o botão para revelar o passo a passo devagar, um clique de cada vez.</p>
+
+    <!-- CARDS DOS 9 TIPOS -->
+    <div id="types">
+
+      <!-- CAUSAL -->
+      <div class="type-card">
+        <button class="type-head">
+          <span class="left">
+            <span class="dot" style="background:#ffb703;"></span>
+            <span><h3>Causal</h3><span class="question">pergunta-chave: por quê?</span></span>
+          </span>
+          <span class="chev">⌄</span>
+        </button>
+        <div class="type-body">
+          <p style="color:var(--chalk-dim); margin-top:0;">Indica a <b style="color:var(--chalk);">causa</b>, o motivo do fato contado na oração principal.</p>
+          <div class="conj-row">
+            <span class="lbl">conjunções mais comuns</span>
+            <div class="conj-pills">
+              <button class="conj-pill active" data-example="Não fui à escola <b>porque</b> estava doente.">porque</button><button class="conj-pill" data-example="Não fui à escola <b>já que</b> estava doente.">já que</button>
+              <button class="conj-pill" data-example="<b>Como</b> estava doente, não fui à escola.">como (no início da frase)</button><button class="conj-pill" data-example="Não fui à escola, <b>pois</b> estava doente.">pois</button>
+              <button class="conj-pill" data-example="Não fui à escola <b>visto que</b> estava doente.">visto que</button><button class="conj-pill" data-example="Não fui à escola <b>uma vez que</b> estava doente.">uma vez que</button>
+            </div>
+            <span class="hint">toque em cada conjunção pra ver a frase mudar ↑</span>
+          </div>
+          <div class="example in-card">Não fui à escola <b>porque</b> estava doente.</div>
+          <div class="pp" data-color="#ffb703">
+            <div class="pp-steps">
+              <div class="pp-step"><b>Passo 1 — ache a conjunção:</b> "porque" liga as duas orações.</div>
+              <div class="pp-step"><b>Passo 2 — pergunte por quê:</b> por que ele não foi à escola? → porque estava doente.</div>
+              <div class="pp-step"><b>Passo 3 — classifique:</b> a resposta é uma causa → oração subordinada adverbial <u>causal</u>.</div>
+            </div>
+            <button class="pp-btn">revelar passo →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONSECUTIVA -->
+      <div class="type-card">
+        <button class="type-head">
+          <span class="left">
+            <span class="dot" style="background:#fb8500;"></span>
+            <span><h3>Consecutiva</h3><span class="question">pergunta-chave: qual foi a consequência?</span></span>
+          </span>
+          <span class="chev">⌄</span>
+        </button>
+        <div class="type-body">
+          <p style="color:var(--chalk-dim); margin-top:0;">Indica a <b style="color:var(--chalk);">consequência</b>, o resultado do que foi dito na principal. Quase sempre vem com uma palavra de intensidade lá na oração principal (tão, tanto, tal) + "que".</p>
+          <div class="conj-row">
+            <span class="lbl">estrutura típica</span>
+            <div class="conj-pills">
+              <button class="conj-pill active" data-example="Estudou <b>tão</b> bem <b>que</b> passou no vestibular.">tão... que</button><button class="conj-pill" data-example="Estudou <b>tanto</b> <b>que</b> passou no vestibular.">tanto... que</button>
+              <button class="conj-pill" data-example="<b>Tal</b> foi o esforço <b>que</b> passou no vestibular.">tal... que</button><button class="conj-pill" data-example="Estudou <b>de tal forma</b> <b>que</b> passou no vestibular.">de tal forma... que</button>
+            </div>
+            <span class="hint">toque em cada conjunção pra ver a frase mudar ↑</span>
+          </div>
+          <div class="example in-card">Estudou <b>tanto</b> <b>que</b> passou no vestibular.</div>
+          <div class="pp" data-color="#fb8500">
+            <div class="pp-steps">
+              <div class="pp-step"><b>Passo 1 — ache o par "tanto... que":</b> "tanto" está na principal, "que" liga a subordinada.</div>
+              <div class="pp-step"><b>Passo 2 — pergunte qual foi o resultado:</b> resultado de estudar tanto → passou no vestibular.</div>
+              <div class="pp-step"><b>Passo 3 — classifique:</b> é uma consequência → oração subordinada adverbial <u>consecutiva</u>.</div>
+            </div>
+            <button class="pp-btn">revelar passo →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONDICIONAL -->
+      <div class="type-card">
+        <button class="type-head">
+          <span class="left">
+            <span class="dot" style="background:#8ecae6;"></span>
+            <span><h3>Condicional</h3><span class="question">pergunta-chave: sob qual condição?</span></span>
+          </span>
+          <span class="chev">⌄</span>
+        </button>
+        <div class="type-body">
+          <p style="color:var(--chalk-dim); margin-top:0;">Indica uma <b style="color:var(--chalk);">condição</b> necessária para que o fato da principal aconteça.</p>
+          <div class="conj-row">
+            <span class="lbl">conjunções mais comuns</span>
+            <div class="conj-pills">
+              <button class="conj-pill active" data-example="<b>Se</b> você estudar, você vai passar.">se</button><button class="conj-pill" data-example="<b>Caso</b> você estude, você vai passar.">caso</button>
+              <button class="conj-pill" data-example="Você vai passar, <b>contanto que</b> estude.">contanto que</button><button class="conj-pill" data-example="Você não vai passar, <b>a menos que</b> estude.">a menos que</button>
+              <button class="conj-pill" data-example="Você vai passar, <b>desde que</b> estude.">desde que</button>
+            </div>
+            <span class="hint">toque em cada conjunção pra ver a frase mudar ↑</span>
+          </div>
+          <div class="example in-card"><b>Se</b> você estudar, você vai passar.</div>
+          <div class="pp" data-color="#8ecae6">
+            <div class="pp-steps">
+              <div class="pp-step"><b>Passo 1 — ache a conjunção:</b> "se" liga as duas orações.</div>
+              <div class="pp-step"><b>Passo 2 — pergunte sob qual condição:</b> sob qual condição você vai passar? → se estudar.</div>
+              <div class="pp-step"><b>Passo 3 — classifique:</b> é uma condição → oração subordinada adverbial <u>condicional</u>.</div>
+            </div>
+            <button class="pp-btn">revelar passo →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFORMATIVA -->
+      <div class="type-card">
+        <button class="type-head">
+          <span class="left">
+            <span class="dot" style="background:#219ebc;"></span>
+            <span><h3>Conformativa</h3><span class="question">pergunta-chave: de acordo com o quê?</span></span>
+          </span>
+          <span class="chev">⌄</span>
+        </button>
+        <div class="type-body">
+          <p style="color:var(--chalk-dim); margin-top:0;">Indica <b style="color:var(--chalk);">conformidade</b>: algo feito de acordo com o que outra coisa diz.</p>
+          <div class="conj-row">
+            <span class="lbl">conjunções mais comuns</span>
+            <div class="conj-pills">
+              <button class="conj-pill active" data-example="Fiz o trabalho <b>conforme</b> o professor pediu.">conforme</button><button class="conj-pill" data-example="Fiz o trabalho <b>segundo</b> o professor pediu.">segundo</button>
+              <button class="conj-pill" data-example="Fiz o trabalho <b>como</b> o professor pediu.">como (= de acordo com)</button><button class="conj-pill" data-example="Fiz o trabalho <b>consoante</b> o professor pediu.">consoante</button>
+            </div>
+            <span class="hint">toque em cada conjunção pra ver a frase mudar ↑</span>
+          </div>
+          <div class="example in-card">Fiz o trabalho <b>conforme</b> o professor pediu.</div>
+          <div class="pp" data-color="#219ebc">
+            <div class="pp-steps">
+              <div class="pp-step"><b>Passo 1 — ache a conjunção:</b> "conforme" liga as duas orações.</div>
+              <div class="pp-step"><b>Passo 2 — pergunte de acordo com o quê:</b> de acordo com o que o trabalho foi feito? → com o que o professor pediu.</div>
+              <div class="pp-step"><b>Passo 3 — classifique:</b> é uma conformidade → oração subordinada adverbial <u>conformativa</u>.</div>
+            </div>
+            <button class="pp-btn">revelar passo →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONCESSIVA -->
+      <div class="type-card">
+        <button class="type-head">
+          <span class="left">
+            <span class="dot" style="background:#ef476f;"></span>
+            <span><h3>Concessiva</h3><span class="question">pergunta-chave: apesar de quê?</span></span>
+          </span>
+          <span class="chev">⌄</span>
+        </button>
+        <div class="type-body">
+          <p style="color:var(--chalk-dim); margin-top:0;">Indica uma ideia <b style="color:var(--chalk);">contrária</b> à da principal, mas que não impede o fato de acontecer.</p>
+          <div class="conj-row">
+            <span class="lbl">conjunções mais comuns</span>
+            <div class="conj-pills">
+              <button class="conj-pill active" data-example="<b>Embora</b> estivesse cansado, terminou o trabalho.">embora</button><button class="conj-pill" data-example="<b>Ainda que</b> estivesse cansado, terminou o trabalho.">ainda que</button>
+              <button class="conj-pill" data-example="<b>Mesmo que</b> estivesse cansado, terminou o trabalho.">mesmo que</button><button class="conj-pill" data-example="<b>Apesar de que</b> estivesse cansado, terminou o trabalho.">apesar de que</button>
+              <button class="conj-pill" data-example="<b>Conquanto</b> estivesse cansado, terminou o trabalho.">conquanto</button>
+            </div>
+            <span class="hint">toque em cada conjunção pra ver a frase mudar ↑</span>
+          </div>
+          <div class="example in-card"><b>Embora</b> estivesse cansado, terminou o trabalho.</div>
+          <div class="pp" data-color="#ef476f">
+            <div class="pp-steps">
+              <div class="pp-step"><b>Passo 1 — ache a conjunção:</b> "embora" liga as duas orações.</div>
+              <div class="pp-step"><b>Passo 2 — pergunte apesar de quê:</b> apesar de quê ele terminou o trabalho? → apesar de estar cansado.</div>
+              <div class="pp-step"><b>Passo 3 — classifique:</b> é um obstáculo que não impediu o fato → oração subordinada adverbial <u>concessiva</u>.</div>
+            </div>
+            <button class="pp-btn">revelar passo →</button>
+          </div>
+          <div class="tip" style="margin-top:18px;"><b>Não confunda com a causal:</b> na causal, a primeira oração explica por que a segunda aconteceu. Na concessiva, a primeira oração é um obstáculo que <em>não impediu</em> a segunda de acontecer.</div>
+        </div>
+      </div>
+
+      <!-- COMPARATIVA -->
+      <div class="type-card">
+        <button class="type-head">
+          <span class="left">
+            <span class="dot" style="background:#ffd166;"></span>
+            <span><h3>Comparativa</h3><span class="question">pergunta-chave: comparado com o quê?</span></span>
+          </span>
+          <span class="chev">⌄</span>
+        </button>
+        <div class="type-body">
+          <p style="color:var(--chalk-dim); margin-top:0;">Estabelece uma <b style="color:var(--chalk);">comparação</b> com a oração principal. O verbo da subordinada costuma ficar subentendido.</p>
+          <div class="conj-row">
+            <span class="lbl">conjunções mais comuns</span>
+            <div class="conj-pills">
+              <button class="conj-pill" data-example="Ela é inteligente <b>como</b> a irmã (é).">como</button><button class="conj-pill" data-example="Ela é mais inteligente <b>que</b> a irmã (é).">(mais/menos)... que</button>
+              <button class="conj-pill active" data-example="Ela é tão inteligente <b>quanto</b> a irmã (é).">tanto... quanto</button><button class="conj-pill" data-example="Ela age <b>assim como</b> a irmã agia.">assim como</button>
+            </div>
+            <span class="hint">toque em cada conjunção pra ver a frase mudar ↑</span>
+          </div>
+          <div class="example in-card">Ela é tão inteligente <b>quanto</b> a irmã (é).</div>
+          <div class="pp" data-color="#ffd166">
+            <div class="pp-steps">
+              <div class="pp-step"><b>Passo 1 — ache a palavra comparativa:</b> "quanto" liga as duas orações.</div>
+              <div class="pp-step"><b>Passo 2 — veja o que está sendo comparado:</b> a inteligência dela com a da irmã.</div>
+              <div class="pp-step"><b>Passo 3 — classifique:</b> é uma comparação → oração subordinada adverbial <u>comparativa</u>.</div>
+            </div>
+            <button class="pp-btn">revelar passo →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FINAL -->
+      <div class="type-card">
+        <button class="type-head">
+          <span class="left">
+            <span class="dot" style="background:#06d6a0;"></span>
+            <span><h3>Final</h3><span class="question">pergunta-chave: com que objetivo?</span></span>
+          </span>
+          <span class="chev">⌄</span>
+        </button>
+        <div class="type-body">
+          <p style="color:var(--chalk-dim); margin-top:0;">Indica a <b style="color:var(--chalk);">finalidade</b>, o objetivo da ação da oração principal.</p>
+          <div class="conj-row">
+            <span class="lbl">conjunções mais comuns</span>
+            <div class="conj-pills">
+              <button class="conj-pill active" data-example="Estudei bastante <b>para que</b> eu pudesse passar.">para que</button><button class="conj-pill" data-example="Estudei bastante <b>a fim de que</b> eu pudesse passar.">a fim de que</button>
+              <button class="conj-pill" data-example="Vem cá, <b>que</b> eu te conte uma coisa.">que (= para que)</button>
+            </div>
+            <span class="hint">toque em cada conjunção pra ver a frase mudar ↑</span>
+          </div>
+          <div class="example in-card">Estudei bastante <b>para que</b> eu pudesse passar.</div>
+          <div class="pp" data-color="#06d6a0">
+            <div class="pp-steps">
+              <div class="pp-step"><b>Passo 1 — ache a conjunção:</b> "para que" liga as duas orações.</div>
+              <div class="pp-step"><b>Passo 2 — pergunte com que objetivo:</b> com que objetivo estudou bastante? → para passar.</div>
+              <div class="pp-step"><b>Passo 3 — classifique:</b> é uma finalidade → oração subordinada adverbial <u>final</u>.</div>
+            </div>
+            <button class="pp-btn">revelar passo →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROPORCIONAL -->
+      <div class="type-card">
+        <button class="type-head">
+          <span class="left">
+            <span class="dot" style="background:#c77dff;"></span>
+            <span><h3>Proporcional</h3><span class="question">pergunta-chave: como variam juntos?</span></span>
+          </span>
+          <span class="chev">⌄</span>
+        </button>
+        <div class="type-body">
+          <p style="color:var(--chalk-dim); margin-top:0;">Indica que dois fatos acontecem <b style="color:var(--chalk);">na mesma proporção</b>: um varia junto com o outro.</p>
+          <div class="conj-row">
+            <span class="lbl">conjunções mais comuns</span>
+            <div class="conj-pills">
+              <button class="conj-pill" data-example="<b>À proporção que</b> o tempo passava, ela ficava mais calma.">à proporção que</button><button class="conj-pill active" data-example="<b>À medida que</b> o tempo passava, ela ficava mais calma.">à medida que</button>
+              <button class="conj-pill" data-example="<b>Ao passo que</b> o tempo passava, ela ficava mais calma.">ao passo que</button><button class="conj-pill" data-example="<b>Quanto mais</b> o tempo passava, mais ela ficava calma.">quanto mais... mais</button>
+            </div>
+            <span class="hint">toque em cada conjunção pra ver a frase mudar ↑</span>
+          </div>
+          <div class="example in-card"><b>À medida que</b> o tempo passava, ela ficava mais calma.</div>
+          <div class="pp" data-color="#c77dff">
+            <div class="pp-steps">
+              <div class="pp-step"><b>Passo 1 — ache a conjunção:</b> "à medida que" liga as duas orações.</div>
+              <div class="pp-step"><b>Passo 2 — veja a relação de proporção:</b> tempo passando = ela ficando mais calma, ao mesmo tempo.</div>
+              <div class="pp-step"><b>Passo 3 — classifique:</b> é uma proporção → oração subordinada adverbial <u>proporcional</u>.</div>
+            </div>
+            <button class="pp-btn">revelar passo →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEMPORAL -->
+      <div class="type-card">
+        <button class="type-head">
+          <span class="left">
+            <span class="dot" style="background:#ff7f51;"></span>
+            <span><h3>Temporal</h3><span class="question">pergunta-chave: quando?</span></span>
+          </span>
+          <span class="chev">⌄</span>
+        </button>
+        <div class="type-body">
+          <p style="color:var(--chalk-dim); margin-top:0;">Indica o <b style="color:var(--chalk);">tempo</b> em que acontece o fato da oração principal.</p>
+          <div class="conj-row">
+            <span class="lbl">conjunções mais comuns</span>
+            <div class="conj-pills">
+              <button class="conj-pill" data-example="<b>Quando</b> cheguei, o telefone tocou.">quando</button><button class="conj-pill" data-example="<b>Enquanto</b> eu cozinhava, o telefone tocou.">enquanto</button>
+              <button class="conj-pill active" data-example="<b>Assim que</b> cheguei, o telefone tocou.">assim que</button><button class="conj-pill" data-example="<b>Logo que</b> cheguei, o telefone tocou.">logo que</button>
+              <button class="conj-pill" data-example="<b>Antes que</b> eu chegasse, o telefone tocou.">antes que</button><button class="conj-pill" data-example="<b>Depois que</b> cheguei, o telefone tocou.">depois que</button>
+              <button class="conj-pill" data-example="Esperei <b>até que</b> o telefone tocasse.">até que</button><button class="conj-pill" data-example="<b>Sempre que</b> chego, o telefone toca.">sempre que</button>
+            </div>
+            <span class="hint">toque em cada conjunção pra ver a frase mudar ↑</span>
+          </div>
+          <div class="example in-card"><b>Assim que</b> cheguei, o telefone tocou.</div>
+          <div class="pp" data-color="#ff7f51">
+            <div class="pp-steps">
+              <div class="pp-step"><b>Passo 1 — ache a conjunção:</b> "assim que" liga as duas orações.</div>
+              <div class="pp-step"><b>Passo 2 — pergunte quando:</b> quando o telefone tocou? → assim que cheguei.</div>
+              <div class="pp-step"><b>Passo 3 — classifique:</b> é uma circunstância de tempo → oração subordinada adverbial <u>temporal</u>.</div>
+            </div>
+            <button class="pp-btn">revelar passo →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip" style="border-color:rgba(255,127,81,0.4); background:rgba(255,127,81,0.08);">
+      <b>Dica final:</b> sempre que estiver em dúvida, volte ao método de 3 passos — ache a conjunção, pergunte qual ideia ela traz, dê o nome a essa ideia. O nome do tipo é quase sempre a resposta da sua própria pergunta.
+    </div>
+  </section>
+
+  <footer>feito para revisão de sintaxe · orações subordinadas</footer>
+</div>
+
+<script>
+// Conjunções clicáveis trocam o exemplo da frase
+document.querySelectorAll('.conj-pill').forEach(pill=>{
+  pill.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const card = pill.closest('.type-card');
+    const example = card.querySelector('.example.in-card');
+    if(!example || !pill.dataset.example) return;
+
+    card.querySelectorAll('.conj-pill').forEach(p=> p.classList.remove('active'));
+    pill.classList.add('active');
+
+    example.classList.add('swap');
+    setTimeout(()=>{
+      example.innerHTML = pill.dataset.example;
+      example.classList.remove('swap');
+      if(card.classList.contains('open')){
+        const body = card.querySelector('.type-body');
+        requestAnimationFrame(()=> body.style.maxHeight = body.scrollHeight + 'px');
+      }
+    }, 150);
+  });
+});
+
+// Acordeão dos tipos de adverbiais
+document.querySelectorAll('.type-head').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const card = btn.closest('.type-card');
+    const body = card.querySelector('.type-body');
+    const isOpen = card.classList.contains('open');
+    if(isOpen){
+      card.classList.remove('open');
+      body.style.maxHeight = null;
+    } else {
+      card.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  });
+});
+
+// Passo a passo revelado aos cliques
+document.querySelectorAll('.pp').forEach(pp=>{
+  const steps = pp.querySelectorAll('.pp-step');
+  const btn = pp.querySelector('.pp-btn');
+  const color = pp.dataset.color || '#f4f1e6';
+  steps.forEach(s=> s.style.borderLeftColor = color);
+  let i = 0;
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(i < steps.length){
+      steps[i].classList.add('shown');
+      i++;
+      // recalcula altura do acordeão pai, se estiver aberto
+      const card = pp.closest('.type-card');
+      const body = card.querySelector('.type-body');
+      if(card.classList.contains('open')){
+        requestAnimationFrame(()=> body.style.maxHeight = body.scrollHeight + 'px');
+      }
+    }
+    if(i >= steps.length){
+      btn.textContent = 'passo a passo completo ✓';
+      btn.disabled = true;
+    } else {
+      btn.textContent = 'revelar passo →';
+    }
+  });
+});
+</script>
+
+</body>
+</html>
